@@ -28,6 +28,9 @@
         <hr/>
         {{ instance.content|linebreaks}}
         <hr/>
+        <div>
+            {{ instance.comment_set.all }}
+        </div>
         <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div> <!--facebook comments-->
     </div>
 {% endblock content %}    
