@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class='col-sm-6 col-sm-offset-3'>
+        <h1>Form</h1> 
+        <form method='POST' action='' enctype='multipart/form-data'>{% csrf_token %} 
+        <!-- post-method associated with create, action take to link on submission, keeping empty sends to /posts/create, csrf is for security, enctype is used during file submission-->                                                 
+        {{ form|crispy }}                                      <!-- form is rendered with form.as_p-->
+        <input type='submit' class='btn btn-default'  value='Create Post'/>
+        </form>
+    </div>
+{% endblock content %}
