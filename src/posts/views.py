@@ -9,7 +9,9 @@ from django.db.models import Q
 # Create your views here.
 
 from .models import Post                          
-from .forms import PostForm                   
+from .forms import PostForm 
+from comments.models import Comment                  
+from comments.forms import CommentForm
 
 def post_list(request):                                    
     queryset_list = Post.objects.filter(draft=False)        #.filter(publish__lte=timezone.now())  wont contain posts with publish date in future    
@@ -60,10 +62,23 @@ def post_create(request):                                    #view to handle req
 def post_detail(request,slug):                                 #to list details of each posts on clicking title, url path updated since takes arguments
     instance = get_object_or_404(Post, slug=slug)                 #instance set to one matching specific id by querying
     share_string = quote_plus(instance.content)
+    
+    initial_data = {                                   #initialising comment_form
+        "content_type": instance.get_content_type,
+        "object_id": instance.id
+    }
+    comment_form = CommentForm(request.POST or None, initial=initial_data)
+    if comment_form.is_valid():
+        print(comment_form.cleaned_data)
+   
+    comments = instance.comments
+    #Comments.objects.filter(post=instance)
     context = {
         "title": instance.title,
         "instance": instance,
         "share_string": share_string,
+        "comments": comments,
+        "comment_form": comment_form,
     }
     return render(request,"post_detail.html", context)       #context sent to post_detail.html
     #return HttpResponse(<h1>Detail</h1>)

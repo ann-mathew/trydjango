@@ -29,9 +29,16 @@
         {{ instance.content|linebreaks}}
         <hr/>
         <div>
-            {{ instance.comment_set.all }}
+            <p class='lead'>Comments</p>
+            <hr/>
+            {% for comment in comments %}
+                <blockquote class="blockquote">
+                <p class="mb-0">{{ comment.content }}</p>
+                <footer class="blockquote-footer">via {{ comment.user }} {{ comment.timestamp|timesince }} ago</footer>
+                </blockquote>
+                <hr/>
+            {% endfor %}
         </div>
-        <div class="fb-comments" data-href="{{ request.build_absolute_uri }}" data-numposts="5" data-width=""></div> <!--facebook comments-->
     </div>
 {% endblock content %}    
 
